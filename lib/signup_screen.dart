@@ -1,5 +1,6 @@
 // ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, unused_import, unused_field, use_build_context_synchronously, avoid_print, unnecessary_null_comparison, prefer_const_literals_to_create_immutables
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -9,6 +10,12 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class InitState extends State<SignUpScreen> {
+  final emailTextEditController = TextEditingController();
+  final firstNameTextEditController = TextEditingController();
+  final phoneTextEditController = TextEditingController();
+  final passwordTextEditController = TextEditingController();
+  final confirmPasswordTextEditController = TextEditingController();
+
   final _auth = FirebaseAuth.instance;
   late String email;
   late String password;
@@ -74,6 +81,7 @@ class InitState extends State<SignUpScreen> {
             ],
           ),
           child: TextField(
+            controller: firstNameTextEditController,
             cursorColor: Color(0xffF5591F),
             onChanged: (value) => {name = value},
             decoration: InputDecoration(
@@ -103,6 +111,7 @@ class InitState extends State<SignUpScreen> {
             ],
           ),
           child: TextField(
+            controller: emailTextEditController,
             cursorColor: Color(0xffF5591F),
             onChanged: (value) => {email = value},
             decoration: InputDecoration(
@@ -132,6 +141,7 @@ class InitState extends State<SignUpScreen> {
             ],
           ),
           child: TextField(
+            controller: phoneTextEditController,
             cursorColor: Color(0xffF5591F),
             onChanged: (value) => {phone = value},
             decoration: InputDecoration(
@@ -162,6 +172,7 @@ class InitState extends State<SignUpScreen> {
             ],
           ),
           child: TextField(
+            controller: passwordTextEditController,
             cursorColor: Color(0xffF5591F),
             onChanged: (value) => {password = value},
             decoration: InputDecoration(
@@ -177,22 +188,22 @@ class InitState extends State<SignUpScreen> {
           ),
         ),
         GestureDetector(
-          onTap: () async {
-            setState(() {
-              showSpinner = true;
-            });
-            try {
-              final newUser = await _auth.createUserWithEmailAndPassword(
-                  email: email, password: password);
-              if (newUser != null) {
-                Navigator.pushNamed(context, 'home_screen');
-              }
-            } catch (e) {
-              debugPrint('$e');
-            }
-            setState(() {
-              showSpinner = false;
-            });
+          onTap: () {
+            _auth
+                .createUserWithEmailAndPassword(
+                    email: emailTextEditController.text,
+                    password: passwordTextEditController.text)
+                .then((onValue) {
+              FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(onValue.user!.uid)
+                  .set({
+                'firstName': firstNameTextEditController.text,
+                'phone': phoneTextEditController.text,
+              }).then((userInfoValue) {
+                Navigator.of(context).pushNamed('LoginScreen');
+              });
+            }).catchError((onError) {});
           },
           child: Container(
             alignment: Alignment.center,
