@@ -1,6 +1,7 @@
-// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors
+// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, unused_import, unused_field, use_build_context_synchronously, avoid_print, unnecessary_null_comparison, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SignUpScreen extends StatefulWidget {
   @override
@@ -8,6 +9,12 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class InitState extends State<SignUpScreen> {
+  final _auth = FirebaseAuth.instance;
+  late String email;
+  late String password;
+  late String name;
+  late String phone;
+  bool showSpinner = false;
   @override
   Widget build(BuildContext context) => initWidget();
 
@@ -22,7 +29,7 @@ class InitState extends State<SignUpScreen> {
             borderRadius: BorderRadius.only(bottomLeft: Radius.circular(90)),
             color: Color(0xffF5591F),
             gradient: LinearGradient(
-              colors: const [(Color(0xffF5591F)), Color(0xffF2861E)],
+              colors: [(Color(0xffF5591F)), Color(0xffF2861E)],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
             ),
@@ -59,7 +66,7 @@ class InitState extends State<SignUpScreen> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(50),
             color: Colors.grey[200],
-            boxShadow: const [
+            boxShadow: [
               BoxShadow(
                   offset: Offset(0, 10),
                   blurRadius: 50,
@@ -68,6 +75,7 @@ class InitState extends State<SignUpScreen> {
           ),
           child: TextField(
             cursorColor: Color(0xffF5591F),
+            onChanged: (value) => {name = value},
             decoration: InputDecoration(
               icon: Icon(
                 Icons.person,
@@ -87,7 +95,7 @@ class InitState extends State<SignUpScreen> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(50),
             color: Colors.grey[200],
-            boxShadow: const [
+            boxShadow: [
               BoxShadow(
                   offset: Offset(0, 10),
                   blurRadius: 50,
@@ -96,6 +104,7 @@ class InitState extends State<SignUpScreen> {
           ),
           child: TextField(
             cursorColor: Color(0xffF5591F),
+            onChanged: (value) => {email = value},
             decoration: InputDecoration(
               icon: Icon(
                 Icons.email,
@@ -115,7 +124,7 @@ class InitState extends State<SignUpScreen> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(50),
             color: Color(0xffEEEEEE),
-            boxShadow: const [
+            boxShadow: [
               BoxShadow(
                   offset: Offset(0, 20),
                   blurRadius: 100,
@@ -124,6 +133,7 @@ class InitState extends State<SignUpScreen> {
           ),
           child: TextField(
             cursorColor: Color(0xffF5591F),
+            onChanged: (value) => {phone = value},
             decoration: InputDecoration(
               focusColor: Color(0xffF5591F),
               icon: Icon(
@@ -144,7 +154,7 @@ class InitState extends State<SignUpScreen> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(50),
             color: Color(0xffEEEEEE),
-            boxShadow: const [
+            boxShadow: [
               BoxShadow(
                   offset: Offset(0, 20),
                   blurRadius: 100,
@@ -153,6 +163,7 @@ class InitState extends State<SignUpScreen> {
           ),
           child: TextField(
             cursorColor: Color(0xffF5591F),
+            onChanged: (value) => {password = value},
             decoration: InputDecoration(
               focusColor: Color(0xffF5591F),
               icon: Icon(
@@ -166,8 +177,22 @@ class InitState extends State<SignUpScreen> {
           ),
         ),
         GestureDetector(
-          onTap: () {
-            // Write Click Listener Code Here.
+          onTap: () async {
+            setState(() {
+              showSpinner = true;
+            });
+            try {
+              final newUser = await _auth.createUserWithEmailAndPassword(
+                  email: email, password: password);
+              if (newUser != null) {
+                Navigator.pushNamed(context, 'home_screen');
+              }
+            } catch (e) {
+              debugPrint('$e');
+            }
+            setState(() {
+              showSpinner = false;
+            });
           },
           child: Container(
             alignment: Alignment.center,
@@ -176,12 +201,12 @@ class InitState extends State<SignUpScreen> {
             height: 54,
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                  colors: const [(Color(0xffF5591F)), Color(0xffF2861E)],
+                  colors: [(Color(0xffF5591F)), Color(0xffF2861E)],
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight),
               borderRadius: BorderRadius.circular(50),
               color: Colors.grey[200],
-              boxShadow: const [
+              boxShadow: [
                 BoxShadow(
                     offset: Offset(0, 10),
                     blurRadius: 50,
