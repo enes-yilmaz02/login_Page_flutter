@@ -1,28 +1,23 @@
-// ignore_for_file: unused_import, use_key_in_widget_constructors, prefer_const_constructors, file_names
-
-import 'dart:io';
+// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'signup_screen.dart';
 
-class LoginScreen extends StatefulWidget {
+class SignUpScreen extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => StartState();
+  State<StatefulWidget> createState() => InitState();
 }
 
-class StartState extends State<LoginScreen> {
+class InitState extends State<SignUpScreen> {
   @override
-  Widget build(BuildContext context) {
-    return initWidget();
-  }
+  Widget build(BuildContext context) => initWidget();
 
-  initWidget() {
+  Widget initWidget() {
     return Scaffold(
         body: SingleChildScrollView(
             child: Column(
       children: [
         Container(
-          height: 300,
+          height: 250,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(bottomLeft: Radius.circular(90)),
             color: Color(0xffF5591F),
@@ -49,7 +44,7 @@ class StartState extends State<LoginScreen> {
                 margin: EdgeInsets.only(right: 20, top: 20),
                 alignment: Alignment.bottomRight,
                 child: Text(
-                  "Login",
+                  "Register",
                   style: TextStyle(fontSize: 20, color: Colors.white),
                 ),
               )
@@ -75,10 +70,67 @@ class StartState extends State<LoginScreen> {
             cursorColor: Color(0xffF5591F),
             decoration: InputDecoration(
               icon: Icon(
+                Icons.person,
+                color: Color(0xffF5591F),
+              ),
+              hintText: "Full Name",
+              enabledBorder: InputBorder.none,
+              focusedBorder: InputBorder.none,
+            ),
+          ),
+        ),
+        Container(
+          alignment: Alignment.center,
+          margin: EdgeInsets.only(left: 20, right: 20, top: 20),
+          padding: EdgeInsets.only(left: 20, right: 20),
+          height: 54,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(50),
+            color: Colors.grey[200],
+            boxShadow: const [
+              BoxShadow(
+                  offset: Offset(0, 10),
+                  blurRadius: 50,
+                  color: Color(0xffEEEEEE)),
+            ],
+          ),
+          child: TextField(
+            cursorColor: Color(0xffF5591F),
+            decoration: InputDecoration(
+              icon: Icon(
                 Icons.email,
                 color: Color(0xffF5591F),
               ),
-              hintText: "Enter Email",
+              hintText: "Email",
+              enabledBorder: InputBorder.none,
+              focusedBorder: InputBorder.none,
+            ),
+          ),
+        ),
+        Container(
+          alignment: Alignment.center,
+          margin: EdgeInsets.only(left: 20, right: 20, top: 20),
+          padding: EdgeInsets.only(left: 20, right: 20),
+          height: 54,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(50),
+            color: Color(0xffEEEEEE),
+            boxShadow: const [
+              BoxShadow(
+                  offset: Offset(0, 20),
+                  blurRadius: 100,
+                  color: Color(0xffEEEEEE)),
+            ],
+          ),
+          child: TextField(
+            cursorColor: Color(0xffF5591F),
+            decoration: InputDecoration(
+              focusColor: Color(0xffF5591F),
+              icon: Icon(
+                Icons.phone,
+                color: Color(0xffF5591F),
+              ),
+              hintText: "Phone Number",
               enabledBorder: InputBorder.none,
               focusedBorder: InputBorder.none,
             ),
@@ -113,16 +165,6 @@ class StartState extends State<LoginScreen> {
             ),
           ),
         ),
-        Container(
-          margin: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-          alignment: Alignment.centerRight,
-          child: GestureDetector(
-            onTap: () {
-              // Write Click Listener Code Here
-            },
-            child: Text("Forget Password?"),
-          ),
-        ),
         GestureDetector(
           onTap: () {
             // Write Click Listener Code Here.
@@ -147,29 +189,25 @@ class StartState extends State<LoginScreen> {
               ],
             ),
             child: Text(
-              "LOGIN",
+              "REGISTER",
               style: TextStyle(color: Colors.white),
             ),
           ),
         ),
         Container(
-          margin: EdgeInsets.only(top: 10),
+          margin: EdgeInsets.only(top: 10, bottom: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text("Don't Have Any Account?  "),
+              Text("Have Already Member?  "),
               GestureDetector(
                 child: Text(
-                  "Register Now",
+                  "Login Now",
                   style: TextStyle(color: Color(0xffF5591F)),
                 ),
                 onTap: () {
                   // Write Tap Code Here.
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SignUpScreen(),
-                      ));
+                  Navigator.pop(context);
                 },
               )
             ],
